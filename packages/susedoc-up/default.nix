@@ -37,9 +37,9 @@ stdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "SUSE";
     repo = "release-notes";
-    rev = "5698bff79c9a18096cc1718695f6580d7d66e6db";
+    rev = "0e83470f7fc721600a0d1d4cdb5401d67c8278de";
     sparseCheckout = [ "scripts" ];
-    hash = "sha256-IfhRSzKObMVwZXm1JzvR5CZnbFbYNvTCQ8KHuCu3Q0o=";
+    hash = "sha256-JbJYHirg1u6Sy2jSWZ5qy+LTA7yNESBBhVYeiHKO1Uc=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
