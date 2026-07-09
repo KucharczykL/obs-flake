@@ -9,11 +9,15 @@
   ...
 }:
 let
+  # perl with Date::Parse/Time::Zone; changelog2spec (and friends) need it to
+  # turn .changes into the RPM %changelog. Used for patchShebangs so the perl
+  # helpers resolve to an interpreter that actually has the modules.
+  perlEnv = perl.withPackages (p: with p; [ TimeDate ]);
   # Host-side tools the `build` orchestrator shells out to when driving a
   # podman build root. Extended as the first real build surfaces gaps.
   runtimeDeps = with pkgs; [
     podman
-    perl
+    perlEnv
     rpm
     curl
     gnutar
@@ -47,7 +51,7 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     makeWrapper
     gnumake
-    perl
+    perlEnv
   ];
 
   dontConfigure = true;
