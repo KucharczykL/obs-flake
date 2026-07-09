@@ -39,7 +39,7 @@ stdenv.mkDerivation {
     repo = "release-notes";
     rev = "ea932ed5037d788d3bd6b1c8d31be388dfa9f3cc";
     sparseCheckout = [ "scripts" ];
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-QTV8IGBogJXn7rQaTcTeieeXyBcsBml239mfvx3xWAw=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
