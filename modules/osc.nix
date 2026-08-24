@@ -130,7 +130,7 @@ in
           if [[ "$line" =~ ^pass=\"?PASSWORD_PLACEHOLDER:([^\"]*)\"?$ ]]; then
             pw_file="''${BASH_REMATCH[1]}"
             if [ -f "$pw_file" ]; then
-              echo "pass = \$(cat "$pw_file")" >> "$TEMP_OSCRC"
+              echo "pass = $(cat "$pw_file")" >> "$TEMP_OSCRC"
             fi
           else
             echo "$line" >> "$TEMP_OSCRC"
