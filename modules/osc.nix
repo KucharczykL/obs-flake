@@ -124,11 +124,13 @@ in
 
         # Loop through the Nix-generated config structure and replace password
         # placeholders securely with their decrypted values at activation time.
+        # Note: lib.generators.toINI quotes string values containing special
+        # characters (like paths), so we strip optional quotes from the value.
         while IFS= read -r line; do
-          if [[ "$line" =~ ^pass=PASSWORD_PLACEHOLDER:(.*)$ ]]; then
+          if [[ "$line" =~ ^pass=\"?PASSWORD_PLACEHOLDER:([^\"]*)\"?$ ]]; then
             pw_file="''${BASH_REMATCH[1]}"
             if [ -f "$pw_file" ]; then
-              echo "pass = $(cat "$pw_file")" >> "$TEMP_OSCRC"
+              echo "pass = \$(cat "$pw_file")" >> "$TEMP_OSCRC"
             fi
           else
             echo "$line" >> "$TEMP_OSCRC"
