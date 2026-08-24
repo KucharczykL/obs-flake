@@ -17,14 +17,14 @@ let
           pass = "PASSWORD_PLACEHOLDER:${cfg.passwordFile}";
         });
       };
-      additionalApiBlocks = lib.mapAttrs' (name: value: lib.nameValuePair "https://${name}" {
+      additionalApiBlocks = lib.mapAttrs' (name: value: lib.nameValuePair "https://${name}" ({
         user = value.user;
         credentials_mgr_class = if value.passwordFile != null then "osc.credentials.PlaintextConfigFileCredentialsManager" else "osc.credentials.TransientCredentialsManager";
         sshkey = value.sshkey;
         trusted_prj = value.trustedProjects;
       } // (lib.optionalAttrs (value.passwordFile != null) {
         pass = "PASSWORD_PLACEHOLDER:${value.passwordFile}";
-      })) cfg.apis;
+      }))) cfg.apis;
     in
     lib.recursiveUpdate {
       general = {
@@ -130,7 +130,7 @@ in
           if [[ "$line" =~ ^pass=\"?PASSWORD_PLACEHOLDER:([^\"]*)\"?$ ]]; then
             pw_file="''${BASH_REMATCH[1]}"
             if [ -f "$pw_file" ]; then
-              echo "pass = $(cat "$pw_file")" >> "$TEMP_OSCRC"
+              echo "pass = \$(cat "$pw_file")" >> "$TEMP_OSCRC"
             fi
           else
             echo "$line" >> "$TEMP_OSCRC"
