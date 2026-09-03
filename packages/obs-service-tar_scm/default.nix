@@ -38,6 +38,12 @@ stdenv.mkDerivation rec {
     hash = "sha256-f4lIuQ9C8+PYYESuZ7FJQgA14rAcPiEZphiZNtcwmes=";
   };
 
+  # 0.13.0 only creates a local ref for --revision on the initial clone.  When
+  # osc reuses the clone left in the package directory, a branch or tag pushed
+  # since then stays remote-only and the run dies with "<rev>: No such
+  # revision".
+  patches = [ ./git-fetch-revision-in-cached-clone.patch ];
+
   nativeBuildInputs = [ makeWrapper ];
 
   dontConfigure = true;

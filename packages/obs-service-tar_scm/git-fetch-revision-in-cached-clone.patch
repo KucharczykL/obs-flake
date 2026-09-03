@@ -1,0 +1,21 @@
+--- a/TarSCM/scm/git.py
++++ b/TarSCM/scm/git.py
+@@ -263,6 +263,18 @@
+                 logging.info("Please fix corrupt cache directory!")
+                 raise exc
+ 
++        # A revision naming a branch or tag that appeared upstream after this
++        # clone was made only arrives as a remote-tracking ref, which
++        # switch_revision() cannot resolve.  Create the local ref and check it
++        # out, mirroring what the initial clone in fetch_upstream_scm() does.
++        if self.revision and not self._ref_exists(self.revision):
++            self.fetch_specific_revision()
++            if not self.repocachedir:
++                self.helpers.safe_run(
++                    self._get_scm_cmd() + ['checkout', self.revision],
++                    cwd=self.clone_dir
++                )
++
+     def detect_version(self, args):
+         """
+         Automatic detection of version number for checked-out GIT repository.
