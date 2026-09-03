@@ -94,8 +94,22 @@ stdenv.mkDerivation {
         'exec "$BUILD_DIR/unpackarchive"'
 
     # build hardcodes BUILD_DIR=/usr/lib/build unless the env var is set.
+    #
+    # The XDG search paths are dropped because osc runs us through sudo, whose
+    # PAM stack hands us root's NixOS session environment. Those lists name
+    # directories under /root and /nix that do not exist inside a SUSE build
+    # root, and obs-build passes the environment straight in: the rpmlint step
+    # is `chroot ... su -s`, a non-login su that keeps the environment, so
+    # rpmlint runs as abuild and stats /root/... , which is 0700 root-owned in
+    # the build root. Its is_dir() lets ENOENT through but not EACCES, so the
+    # whole run dies after a successful build. Unset rather than clear: rpmlint
+    # then falls back to the spec default of /etc/xdg, which is the right
+    # answer inside the chroot. Only the *_DIRS search lists go -- podman keeps
+    # XDG_CONFIG_HOME/XDG_DATA_HOME/XDG_RUNTIME_DIR for rootless storage.
     wrapProgram $out/bin/build \
       --set BUILD_DIR $out/lib/build \
+      --unset XDG_CONFIG_DIRS \
+      --unset XDG_DATA_DIRS \
       --prefix PATH : ${lib.makeBinPath runtimeDeps}
     runHook postInstall
   '';
