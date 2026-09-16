@@ -54,6 +54,29 @@ programs.osc = {
 (For home-manager inside a NixOS flake, pass `inputs` through with
 `home-manager.extraSpecialArgs`.)
 
+Passwords go through a secret manager's template, so the store holds only
+placeholders. With sops-nix and home-manager as a NixOS module:
+
+```nix
+# home-manager config
+programs.osc = {
+  # ...
+  password = osConfig.sops.placeholder.obs_password;
+  apis."api.opensuse.org".password = osConfig.sops.placeholder.opensuse_password;
+  configFile = osConfig.sops.templates.oscrc.path;
+};
+
+# NixOS config
+sops.templates.oscrc = {
+  content = config.home-manager.users.<name>.programs.osc.configText;
+  owner = "<name>";
+};
+```
+
+`~/.config/osc/oscrc` becomes a symlink to the rendered file, which sops-nix
+rewrites on every activation. The older `passwordFile` options still work;
+they copy the password in at home-manager activation only.
+
 ### devShell
 
 Use it directly:
