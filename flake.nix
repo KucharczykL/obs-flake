@@ -20,6 +20,7 @@
         "obs-service-recompress"
         "obs-service-set_version"
         "obs-service-source_validator"
+        "obs-service-format_spec_file"
         "obs-build"
         "obs-build-vc"
         "obs-build-perl"
