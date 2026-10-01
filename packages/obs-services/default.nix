@@ -14,5 +14,6 @@ symlinkJoin {
     (callPackage ../obs-service-recompress { })
     (callPackage ../obs-service-set_version { })
     (callPackage ../obs-service-source_validator { })
+    (callPackage ../obs-service-format_spec_file { })
   ];
 }

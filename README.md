@@ -13,7 +13,7 @@ source services, `obs-build` for local rootless-**podman** builds, and the
 - `osc-obs` — `osc` with its hardcoded `/usr/lib/{obs/service,build}` paths
   repointed at the nix stores below, plus the python `rpm` bindings.
 - `obs-services` — `tar_scm`/`obs_scm`, `recompress`, `set_version`,
-  `source_validator` merged into one service dir (osc searches one dir).
+  `source_validator`, `format_spec_file` merged into one service dir (osc searches one dir).
 - `obs-build` (+ `obs-build-vc`, `obs-build-perl`) — local `osc build`.
 - `susedoc-up` — `upnews`/`uprn`/`upchangelog` from github `SUSE/release-notes`.
   Accepts a `uprnSettings` arg (attrset written to `uprn.conf`), empty by
