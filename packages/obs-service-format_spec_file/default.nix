@@ -18,7 +18,7 @@ stdenv.mkDerivation {
     hash = "sha256-TdW8HhYxU5FIh76N8JVwcOaL70+TRNESon91wynX+dE=";
   };
 
-  # prepare_spec is core-perl only; perl here lets patchShebangs rewrite it.
+  # patchShebangs needs perl; core modules only.
   nativeBuildInputs = [
     makeWrapper
     perl
@@ -41,8 +41,7 @@ stdenv.mkDerivation {
     substituteInPlace "$svcdir/format_spec_file" \
       --replace-fail /usr/lib/obs/service/format_spec_file.files "$svcdir/format_spec_file.files"
     patchShebangs "$svcdir"
-    # prepare_spec derives the copyright year from SOURCE_DATE_EPOCH, which
-    # nix develop pins to 1980.
+    # nix develop SOURCE_DATE_EPOCH means 1980 copyright.
     wrapProgram "$svcdir/format_spec_file" --unset SOURCE_DATE_EPOCH
     runHook postInstall
   '';
